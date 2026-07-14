@@ -1,0 +1,36 @@
+AeroTwin AI - Model Training Results
+==================================================
+
+Total samples: 300
+Features: 21
+
+CompressorHealth:
+  Train R²: 0.99
+  Test R²:  0.945
+  Test MAE: 0.01319
+
+CombustorHealth:
+  Train R²: 0.9836
+  Test R²:  0.9418
+  Test MAE: 0.00551
+
+TurbineHealth:
+  Train R²: 0.9726
+  Test R²:  0.8469
+  Test MAE: 0.015019
+
+OverallHealth:
+  Train R²: 0.9872
+  Test R²:  0.9621
+  Test MAE: 0.007127
+
+Thrust_N:
+  Train R²: 0.9932
+  Test R²:  0.9705
+  Test MAE: 2176.064027
+
+TSFC_g_N_s:
+  Train R²: 0.9954
+  Test R²:  0.9807
+  Test MAE: 0.000738
+
