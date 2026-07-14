@@ -4,7 +4,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-MODEL_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'ml', 'models')
+MODEL_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'ml', 'models')
+if not os.path.exists(os.path.join(MODEL_DIR, 'scaler.pkl')):
+    MODEL_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'ml', 'models')
 
 MODEL_NAMES = [
     'compressorhealth', 'combustorhealth', 'turbinehealth',
