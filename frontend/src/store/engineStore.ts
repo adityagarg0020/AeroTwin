@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { PredictionResult, EngineInput, Alert, HealthStatus } from '../types';
+import type { PredictionResult, EngineInput, Alert, HealthStatus, MaintenanceRecommendation } from '../types';
 
 interface EngineState {
   selectedEngineId: number;
@@ -13,6 +13,14 @@ interface EngineState {
   isExploded: boolean;
   selectedComponent: string | null;
   healthStatus: HealthStatus | null;
+  heatmapMode: boolean;
+  xrayMode: boolean;
+  soundEnabled: boolean;
+  missionCycle: number;
+  isMissionReplay: boolean;
+  maintenanceRecommendations: MaintenanceRecommendation[];
+  modelsLoaded: boolean;
+  demoModeActive: boolean;
 
   setSelectedEngineId: (id: number) => void;
   setCurrentCycle: (cycle: number) => void;
@@ -26,6 +34,14 @@ interface EngineState {
   setExploded: (exploded: boolean) => void;
   setSelectedComponent: (component: string | null) => void;
   setHealthStatus: (status: HealthStatus) => void;
+  setHeatmapMode: (mode: boolean) => void;
+  setXrayMode: (mode: boolean) => void;
+  setSoundEnabled: (enabled: boolean) => void;
+  setMissionCycle: (cycle: number) => void;
+  setIsMissionReplay: (replay: boolean) => void;
+  setMaintenanceRecommendations: (recs: MaintenanceRecommendation[]) => void;
+  setModelsLoaded: (loaded: boolean) => void;
+  setDemoModeActive: (active: boolean) => void;
 }
 
 const defaultEngineInput: EngineInput = {
@@ -47,6 +63,14 @@ export const useEngineStore = create<EngineState>((set) => ({
   isExploded: false,
   selectedComponent: null,
   healthStatus: null,
+  heatmapMode: false,
+  xrayMode: false,
+  soundEnabled: false,
+  missionCycle: 1,
+  isMissionReplay: false,
+  maintenanceRecommendations: [],
+  modelsLoaded: false,
+  demoModeActive: false,
 
   setSelectedEngineId: (id) => set({ selectedEngineId: id }),
   setCurrentCycle: (cycle) => set((state) => ({
@@ -67,4 +91,12 @@ export const useEngineStore = create<EngineState>((set) => ({
   setExploded: (exploded) => set({ isExploded: exploded }),
   setSelectedComponent: (component) => set({ selectedComponent: component }),
   setHealthStatus: (status) => set({ healthStatus: status }),
+  setHeatmapMode: (mode) => set({ heatmapMode: mode }),
+  setXrayMode: (mode) => set({ xrayMode: mode }),
+  setSoundEnabled: (enabled) => set({ soundEnabled: enabled }),
+  setMissionCycle: (cycle) => set({ missionCycle: cycle }),
+  setIsMissionReplay: (replay) => set({ isMissionReplay: replay }),
+  setMaintenanceRecommendations: (recs) => set({ maintenanceRecommendations: recs }),
+  setModelsLoaded: (loaded) => set({ modelsLoaded: loaded }),
+  setDemoModeActive: (active) => set({ demoModeActive: active }),
 }));

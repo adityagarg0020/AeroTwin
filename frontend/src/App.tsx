@@ -10,14 +10,15 @@ import { AICopilotPage } from './pages/AICopilotPage';
 import { FleetPage } from './pages/Fleet';
 import { Maintenance } from './pages/Maintenance';
 import { Settings } from './pages/Settings';
+import { ModelComparison } from './pages/ModelComparison';
 import { Navigation } from './components/layout/Navigation';
 import {
   LayoutDashboard, Box, Brain, BarChart3, Plane, Bot,
-  Layers, Wrench, Settings2, Menu, X
+  Layers, Wrench, Settings2, Menu, X, GitCompare
 } from 'lucide-react';
 
 type Page = 'landing' | 'dashboard' | 'digital-twin' | 'predictions' | 'analytics' |
-  'flight-sim' | 'ai-copilot' | 'fleet' | 'maintenance' | 'settings';
+  'flight-sim' | 'ai-copilot' | 'fleet' | 'maintenance' | 'settings' | 'model-comparison';
 
 const navItems: Array<{ id: Page; label: string; icon: React.ReactNode }> = [
   { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={16} /> },
@@ -28,16 +29,18 @@ const navItems: Array<{ id: Page; label: string; icon: React.ReactNode }> = [
   { id: 'ai-copilot', label: 'AI Copilot', icon: <Bot size={16} /> },
   { id: 'fleet', label: 'Fleet', icon: <Layers size={16} /> },
   { id: 'maintenance', label: 'Maintenance', icon: <Wrench size={16} /> },
+  { id: 'model-comparison', label: 'Model Comparison', icon: <GitCompare size={16} /> },
   { id: 'settings', label: 'Settings', icon: <Settings2 size={16} /> },
 ];
 
 function BootScreen({ onComplete }: { onComplete: () => void }) {
   const [phase, setPhase] = useState(0);
   const bootText = [
-    'AeroTwin AI v1.0.0',
-    'Loading AI models...',
-    'Establishing digital twin connection...',
-    'Calibrating sensors...',
+    'AeroTwin AI v2.0.0',
+    'Initializing neural engine...',
+    'Loading 6 AI models...',
+    'Calibrating digital twin sensors...',
+    'Establishing secure telemetry link...',
     'System ready.',
   ];
 
@@ -102,6 +105,7 @@ export default function App() {
       case 'ai-copilot': return <AICopilotPage />;
       case 'fleet': return <FleetPage />;
       case 'maintenance': return <Maintenance />;
+      case 'model-comparison': return <ModelComparison />;
       case 'settings': return <Settings />;
       default: return <Dashboard />;
     }

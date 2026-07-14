@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from services.data_loader import manager
-from routers import predict, models_router, history, health
+from routers import predict, models_router, history, health, shap_router
 
 
 @asynccontextmanager
@@ -34,6 +34,7 @@ app.include_router(health.router)
 app.include_router(predict.router)
 app.include_router(models_router.router)
 app.include_router(history.router)
+app.include_router(shap_router.router)
 
 
 @app.get('/')
@@ -50,7 +51,8 @@ def root():
             'predict/simulate': '/predict/simulate',
             'history': '/history/{engine_id}',
             'history/range': '/history/range',
-            'history/predict': '/history/predict/{engine_id}'
+            'history/predict': '/history/predict/{engine_id}',
+            'explain': '/explain/{model_name}'
         }
     }
 

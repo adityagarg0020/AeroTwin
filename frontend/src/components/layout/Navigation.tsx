@@ -88,7 +88,7 @@ export function Navigation({ items, currentPage, onNavigate, isOpen, onClose }: 
           {/* Bottom */}
           <div className="p-4 border-t border-white/5">
             <div className="text-center space-y-1">
-              <p className="text-[9px] font-orbitron text-gray-600 tracking-widest uppercase">AeroTwin AI v1.0.0</p>
+              <p className="text-[9px] font-orbitron text-gray-600 tracking-widest uppercase">AeroTwin AI v2.0.0</p>
               <p className="text-[8px] text-gray-700 font-mono-jb">IIT Indore × HAL</p>
             </div>
           </div>

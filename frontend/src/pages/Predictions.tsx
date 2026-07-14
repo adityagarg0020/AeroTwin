@@ -1,10 +1,12 @@
+import { motion } from 'framer-motion';
 import { PageTransition } from '../components/layout/PageTransition';
 import { HealthCard } from '../components/dashboard/HealthCard';
 import { PredictionsPanel } from '../components/dashboard/PredictionsPanel';
 import { RootCauseAnalysis } from '../components/ai/RootCauseAnalysis';
 import { HealthRadarChart } from '../components/charts/RadarChart';
+import { ShapExplainer } from '../components/dashboard/ShapExplainer';
 import { useEngineStore } from '../store/engineStore';
-import { Gauge, Flame, Thermometer, Activity } from 'lucide-react';
+import { Gauge, Flame, Thermometer, Activity, Brain } from 'lucide-react';
 
 export function Predictions() {
   const { predictions } = useEngineStore();
@@ -18,8 +20,14 @@ export function Predictions() {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-space-black text-white p-4">
-        <h1 className="text-lg font-bold text-gradient-blue mb-4">AI Predictions</h1>
+      <div className="min-h-screen bg-space-black text-white p-4 space-y-4">
+        <div className="flex items-center gap-3">
+          <Brain size={20} className="text-primary" />
+          <div>
+            <h1 className="text-lg font-bold text-gradient">AI Predictions</h1>
+            <p className="text-[10px] text-gray-500 font-mono-jb">Multi-Model Ensemble Prediction with Explainable AI</p>
+          </div>
+        </div>
         <div className="grid grid-cols-12 gap-4">
           <div className="col-span-12 lg:col-span-8">
             <div className="grid grid-cols-4 gap-3 mb-4">
@@ -33,8 +41,9 @@ export function Predictions() {
               <RootCauseAnalysis />
             </div>
           </div>
-          <div className="col-span-12 lg:col-span-4">
+          <div className="col-span-12 lg:col-span-4 space-y-4">
             <PredictionsPanel />
+            <ShapExplainer />
           </div>
         </div>
       </div>

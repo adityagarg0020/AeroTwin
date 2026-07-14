@@ -1,4 +1,5 @@
 import { useEffect, useCallback, useState } from 'react';
+import { motion } from 'framer-motion';
 import { PageTransition } from '../components/layout/PageTransition';
 import { TopBar } from '../components/dashboard/TopBar';
 import { HealthCard } from '../components/dashboard/HealthCard';
@@ -9,21 +10,28 @@ import { DegradationTimeline } from '../components/dashboard/DegradationTimeline
 import { EngineView } from '../components/three/EngineView';
 import { FlightSimulator } from '../components/flight/FlightSimulator';
 import { RootCauseAnalysis } from '../components/ai/RootCauseAnalysis';
-import { AICopilot } from '../components/ai/AICopilot';
+import { AICopilotEnhanced } from '../components/ai/AICopilotEnhanced';
 import { FleetGrid } from '../components/fleet/FleetGrid';
 import { HealthTrendChart } from '../components/charts/HealthTrendChart';
 import { HealthRadarChart } from '../components/charts/RadarChart';
+import { ShapExplainer } from '../components/dashboard/ShapExplainer';
+import { MissionReplay } from '../components/dashboard/MissionReplay';
+import { DegradationPlayback } from '../components/dashboard/DegradationPlayback';
+import { MaintenanceSchedule } from '../components/dashboard/MaintenanceSchedule';
 import { useEngineStore } from '../store/engineStore';
 import { predict } from '../api/client';
-import { Gauge, Flame, Thermometer, Activity, Expand, Minimize2 } from 'lucide-react';
+import { useDemoMode } from '../components/effects/DemoMode';
+import { Gauge, Flame, Thermometer, Activity, Expand, Minimize2, Thermometer as HeatIcon, Eye } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 
 export function Dashboard() {
   const {
     engineInput, predictions, setPredictions, currentCycle,
-    setCurrentCycle, isExploded, setExploded, addAlert
+    setCurrentCycle, isExploded, setExploded, addAlert,
+    heatmapMode, setHeatmapMode, xrayMode, setXrayMode
   } = useEngineStore();
   const [demoMode, setDemoMode] = useState(false);
+  const { startDemo, stopDemo } = useDemoMode();
 
   const loadPrediction = useCallback(async () => {
     try {
@@ -56,23 +64,9 @@ export function Dashboard() {
     { component: 'Overall', value: predictions.overallHealth, fullMark: 1 },
   ] : [];
 
-  const startDemo = () => {
-    setDemoMode(true);
-    setCurrentCycle(1);
-    loadPrediction();
-    const interval = setInterval(() => {
-      const store = useEngineStore.getState();
-      if (store.currentCycle >= 300) {
-        clearInterval(interval);
-        setDemoMode(false);
-        return;
-      }
-      store.setCurrentCycle(store.currentCycle + 1);
-      store.setEngineInput({ Cycle: store.currentCycle + 1 });
-      predict({ ...store.engineInput, Cycle: store.currentCycle + 1 })
-        .then((res) => store.setPredictions(res.predictions))
-        .catch(() => {});
-    }, 100);
+  const handleDemo = () => {
+    if (demoMode) { stopDemo(); setDemoMode(false); }
+    else { setDemoMode(true); startDemo(); }
   };
 
   return (
@@ -81,18 +75,33 @@ export function Dashboard() {
         <TopBar />
 
         <div className="flex items-center justify-between">
-          <h1 className="text-lg font-bold text-gradient-blue">Mission Control</h1>
+          <motion.h1
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="text-lg font-bold text-gradient"
+          >
+            Mission Control Center
+          </motion.h1>
           <div className="flex items-center gap-2">
+            <Button size="sm" variant={heatmapMode ? 'primary' : 'ghost'} onClick={() => setHeatmapMode(!heatmapMode)}>
+              <HeatIcon size={14} />
+              Heatmap
+            </Button>
+            <Button size="sm" variant={xrayMode ? 'primary' : 'ghost'} onClick={() => setXrayMode(!xrayMode)}>
+              <Eye size={14} />
+              X-Ray
+            </Button>
             <Button size="sm" variant="ghost" onClick={() => setExploded(!isExploded)}>
               {isExploded ? <Minimize2 size={14} /> : <Expand size={14} />}
               {isExploded ? 'Normal View' : 'Exploded View'}
             </Button>
-            <Button size="sm" variant={demoMode ? 'danger' : 'primary'} onClick={startDemo}>
-              {demoMode ? 'Demo Active...' : 'Start Demo'}
+            <Button size="sm" variant={demoMode ? 'danger' : 'primary'} onClick={handleDemo}>
+              {demoMode ? 'Demo Active...' : 'Demo Mode'}
             </Button>
           </div>
         </div>
 
+        {/* First Row: Health Cards + 3D Engine + Predictions */}
         <div className="grid grid-cols-12 gap-4">
           <div className="col-span-12 lg:col-span-3 space-y-4">
             <div className="grid grid-cols-2 gap-2">
@@ -107,7 +116,7 @@ export function Dashboard() {
 
           <div className="col-span-12 lg:col-span-6">
             <div className="glass rounded-2xl overflow-hidden" style={{ height: '550px' }}>
-              <EngineView />
+              <EngineView xray={xrayMode} heatmap={heatmapMode} />
             </div>
           </div>
 
@@ -117,6 +126,7 @@ export function Dashboard() {
           </div>
         </div>
 
+        {/* Second Row: Timeline, Radar, Trend, Root Cause */}
         <div className="grid grid-cols-12 gap-4">
           <div className="col-span-12 lg:col-span-3">
             <DegradationTimeline />
@@ -132,12 +142,35 @@ export function Dashboard() {
           </div>
         </div>
 
+        {/* Third Row: SHAP, Mission Replay, Degradation Playback, Maintenance */}
+        <div className="grid grid-cols-12 gap-4">
+          <div className="col-span-12 lg:col-span-4">
+            <ShapExplainer />
+          </div>
+          <div className="col-span-12 lg:col-span-4">
+            <MissionReplay />
+          </div>
+          <div className="col-span-12 lg:col-span-4">
+            <DegradationPlayback />
+          </div>
+        </div>
+
+        {/* Fourth Row: Fleet + Maintenance Schedule */}
         <div className="grid grid-cols-12 gap-4">
           <div className="col-span-12 lg:col-span-8">
             <FleetGrid />
           </div>
           <div className="col-span-12 lg:col-span-4">
-            <AICopilot minimized />
+            <MaintenanceSchedule />
+          </div>
+        </div>
+
+        {/* Fifth Row: AI Copilot */}
+        <div className="grid grid-cols-12 gap-4">
+          <div className="col-span-12 lg:col-span-12">
+            <div style={{ height: '400px' }}>
+              <AICopilotEnhanced />
+            </div>
           </div>
         </div>
       </div>

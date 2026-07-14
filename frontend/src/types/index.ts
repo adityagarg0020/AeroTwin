@@ -79,3 +79,73 @@ export interface AIAnalysis {
   recommendation: string;
   component: string;
 }
+
+export interface ShapFeature {
+  name: string;
+  value: number;
+  contribution: number;
+  positive: boolean;
+}
+
+export interface ShapExplanation {
+  features: ShapFeature[];
+  baseValue: number;
+  prediction: number;
+  confidence: number;
+}
+
+export interface MissionPhase {
+  name: string;
+  startCycle: number;
+  endCycle: number;
+  altitude: number;
+  mach: number;
+  throttle: number;
+}
+
+export interface DegradationStage {
+  cycle: number;
+  label: string;
+  health: number;
+  description: string;
+}
+
+export interface MaintenanceRecommendation {
+  id: string;
+  component: string;
+  action: string;
+  dueIn: number;
+  priority: 'critical' | 'high' | 'medium' | 'low';
+  estimatedDowntime: string;
+  estimatedCost: string;
+  recommendedParts: string[];
+  technicianNotes: string;
+  recoveryEfficiency: string;
+}
+
+export interface ModelMetrics {
+  accuracy: number;
+  precision: number;
+  recall: number;
+  f1: number;
+  mae: number;
+  rmse: number;
+  inferenceTime: number;
+  trainingTime: number;
+  rocAuc?: number;
+}
+
+export interface ComponentHealth {
+  name: string;
+  health: number;
+  temperature: number;
+  pressure: number;
+  rpm: number;
+  vibration: number;
+  efficiency: number;
+  remainingLife: number;
+  failureProbability: number;
+  degradation: number;
+  maintenanceRecommendation: string;
+  historicalTrend: number[];
+}
