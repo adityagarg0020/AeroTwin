@@ -11,9 +11,7 @@ from routers import predict, models_router, history, health, shap_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("Loading AI models...")
-    manager.load_models()
-    print(f"Loaded {len(manager.models)} models successfully")
+    print("Starting up (models will load on first request)...")
     yield
     print("Shutting down...")
 
