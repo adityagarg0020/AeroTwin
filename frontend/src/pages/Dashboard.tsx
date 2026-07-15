@@ -43,8 +43,10 @@ export function Dashboard() {
       } else if (oh < 0.7) {
         addAlert({ id: Date.now().toString(), type: 'warning' as const, message: 'Engine health degrading. Schedule maintenance.', timestamp: Date.now() });
       }
-    } catch {}
-  }, [engineInput, setPredictions, addAlert]);
+      } catch (err) {
+        console.error('Prediction API error:', err);
+      }
+    }, [engineInput, setPredictions, addAlert]);
 
   useEffect(() => {
     loadPrediction();

@@ -11,6 +11,7 @@ export default defineConfig({
       '/predict': { target: 'http://localhost:8000', changeOrigin: true },
       '/models': { target: 'http://localhost:8000', changeOrigin: true },
       '/history': { target: 'http://localhost:8000', changeOrigin: true },
+      '/explain': { target: 'http://localhost:8000', changeOrigin: true },
     }
   }
 })

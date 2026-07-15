@@ -66,5 +66,6 @@ def explain_prediction(model_name: str, engine_id: int = 1, cycle: int = 1):
     }
     result = generate_shap_values(input_dict, model_name)
     if result is None:
-        return {'error': f'Model {model_name} not found'}, 404
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail=f'Model {model_name} not found')
     return {'model': model_name, 'input': input_dict, 'explanation': result}
